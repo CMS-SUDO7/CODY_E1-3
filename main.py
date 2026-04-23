@@ -224,7 +224,7 @@ def mode_json(filename="data.json"):
     print(f"전체 테스트 수: {total_count}")
     print(f"통과 수: {pass_count}")
     print(f"실패 수: {fail_count}")
-    
+        
     # 요약 출력
     print("\n=== 결과 요약 ===")
     for item in summary:
