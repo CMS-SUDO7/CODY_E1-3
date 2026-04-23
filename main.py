@@ -216,6 +216,15 @@ def mode_json(filename="data.json"):
     # 전체 성능 분석 (3,5,13,25)
     performance_analysis([3,5,13,25])
 
+    total_count = len(summary)
+    pass_count = sum(1 for _, status, _ in summary if status == "PASS")
+    fail_count = sum(1 for _, status, _ in summary if status == "FAIL")
+
+    print("\n=== 전체 집계 ===")
+    print(f"전체 테스트 수: {total_count}")
+    print(f"통과 수: {pass_count}")
+    print(f"실패 수: {fail_count}")
+    
     # 요약 출력
     print("\n=== 결과 요약 ===")
     for item in summary:
