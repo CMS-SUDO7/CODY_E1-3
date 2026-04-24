@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import json
 import time
-import sys
 
 EPSILON = 1e-9
 PERF_REPEAT = 10
@@ -26,7 +24,7 @@ def safe_get(dct, key, default=None):
 # -------------------------
 def read_matrix_once(n, prompt_name="matrix"):
     """한 번의 입력 시도: 실패하면 None 반환"""
-    line_prompt = f"{prompt_name} 한 줄 입력 ({n}개 숫자, 공백 구분): "
+    
     rows = []
     for i in range(n):
         raw = input(f"{prompt_name} {i+1}행: ").strip()
@@ -208,10 +206,19 @@ def mode_json(filename="data.json"):
         t1 = time.perf_counter()
 
         result = compare_scores(score_cross, score_x)
-        status = "PASS" if result == expected else "FAIL"
+
+        if result == "UNDECIDED":
+            status = "FAIL"
+            reason = "동점 발생"
+        elif result == expected:
+            status = "PASS"
+            reason = None
+        else:
+            status = "FAIL"
+            reason = None
 
         print(f"{key}: Cross={score_cross}, X={score_x}, 판정={result}, expected={expected}, {status}")
-        summary.append((key, status, None))
+        summary.append((key, status, reason))
 
     # 전체 성능 분석 (3,5,13,25)
     performance_analysis([3,5,13,25])
@@ -224,7 +231,7 @@ def mode_json(filename="data.json"):
     print(f"전체 테스트 수: {total_count}")
     print(f"통과 수: {pass_count}")
     print(f"실패 수: {fail_count}")
-        
+
     # 요약 출력
     print("\n=== 결과 요약 ===")
     for item in summary:
